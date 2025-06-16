@@ -4,9 +4,20 @@
   <meta charset="UTF-8">
   <title>Live Work Order Board</title>
   <style>
-    body { font-family: sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
+    body { font-family: sans-serif; background: #f4f4f4; margin: 0; padding: 20px; overflow-x: hidden; }
     h1 { text-align: center; }
-    .board { display: flex; gap: 20px; overflow-x: auto; flex-wrap: nowrap; }
+    .board-container {
+      overflow-x: auto;
+      white-space: nowrap;
+      padding-bottom: 20px;
+      margin-bottom: -20px;
+    }
+    .board {
+      display: flex;
+      gap: 20px;
+      flex-wrap: nowrap;
+      padding-bottom: 10px;
+    }
     .column {
       background: #fff;
       border-radius: 8px;
@@ -15,7 +26,10 @@
       min-width: 300px;
       flex-shrink: 0;
     }
-    .column h2 { text-align: center; margin-top: 0; }
+    .column h2 {
+      text-align: center;
+      margin-top: 0;
+    }
     .card {
       background: #fefefe;
       border: 1px solid #ccc;
@@ -68,7 +82,6 @@
         }
       });
 
-      // Update headings with counts
       for (const status in columns) {
         const heading = columns[status].querySelector('h2');
         heading.textContent = `${status} (${counts[status] || 0})`;
@@ -80,7 +93,7 @@
       const res = await fetch(url);
       const text = await res.text();
       const rows = text.trim().split('\n').map(line => line.split(','));
-      rows.shift(); // remove header
+      rows.shift();
       populateBoard(rows);
     }
 
@@ -89,18 +102,20 @@
 </head>
 <body>
   <h1>Live Work Order Board</h1>
-  <div class="board">
-    <div class="column" data-status="To Be Invoiced"><h2>To Be Invoiced</h2></div>
-    <div class="column" data-status="Tech Working"><h2>Tech Working</h2></div>
-    <div class="column" data-status="Service Scheduled"><h2>Service Scheduled</h2></div>
-    <div class="column" data-status="Checked In"><h2>Checked In</h2></div>
-    <div class="column" data-status="Triage"><h2>Triage</h2></div>
-    <div class="column" data-status="Waiting for Parts"><h2>Waiting for Parts</h2></div>
-    <div class="column" data-status="Warranty"><h2>Warranty</h2></div>
-    <div class="column" data-status="Warranty Filed"><h2>Warranty Filed</h2></div>
-    <div class="column" data-status="Manager Approval"><h2>Manager Approval</h2></div>
-    <div class="column" data-status="Needs Prediagnosed"><h2>Needs Prediagnosed</h2></div>
-    <div class="column" data-status="Parts Received"><h2>Parts Received</h2></div>
+  <div class="board-container">
+    <div class="board">
+      <div class="column" data-status="To Be Invoiced"><h2>To Be Invoiced</h2></div>
+      <div class="column" data-status="Tech Working"><h2>Tech Working</h2></div>
+      <div class="column" data-status="Service Scheduled"><h2>Service Scheduled</h2></div>
+      <div class="column" data-status="Checked In"><h2>Checked In</h2></div>
+      <div class="column" data-status="Triage"><h2>Triage</h2></div>
+      <div class="column" data-status="Waiting for Parts"><h2>Waiting for Parts</h2></div>
+      <div class="column" data-status="Warranty"><h2>Warranty</h2></div>
+      <div class="column" data-status="Warranty Filed"><h2>Warranty Filed</h2></div>
+      <div class="column" data-status="Manager Approval"><h2>Manager Approval</h2></div>
+      <div class="column" data-status="Needs Prediagnosed"><h2>Needs Prediagnosed</h2></div>
+      <div class="column" data-status="Parts Received"><h2>Parts Received</h2></div>
+    </div>
   </div>
 </body>
 </html>
