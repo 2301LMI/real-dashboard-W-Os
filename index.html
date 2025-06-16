@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Work Order Status Board</title>
+  <style>
+    body { font-family: sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
+    h1 { text-align: center; }
+    .board {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+    }
+    .column {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 10px;
+      min-width: 300px;
+      flex-shrink: 0;
+    }
+    .column h2 {
+      text-align: center;
+      margin-top: 0;
+    }
+    .card {
+      background: #fefefe;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    .aging-yellow { background: #fff7cc; }
+    .aging-red { background: #ffd6d6; }
+    .aging-blue { background: #cce0ff; }
+  </style>
+  <script>
+    function getAgingClass(days) {
+      if (days >= 10) return 'aging-blue';
+      if (days >= 7) return 'aging-red';
+      if (days >= 3) return 'aging-yellow';
+      return '';
+    }
+
+    function createCard(id, name, desc, days) {
+      const div = document.createElement('div');
+      div.className = 'card ' + getAgingClass(days);
+      div.innerHTML = `
+        <strong>W.O. ID:</strong> ${id}<br>
+        <strong>Name:</strong> ${name}<br>
+        <strong>Description:</strong> ${desc}<br>
+        <strong>Days in Status:</strong> ${days}
+      `;
+      return div;
+    }
+
+    function populateBoard() {
+      const data = [
+        { status: 'To Be Invoiced', id: 2904, name: '2H', desc: 'FORD F250 WHITE', days: 54 },
+        { status: 'To Be Invoiced', id: 2973, name: '2H', desc: '08 CHEVY SILVERADO 2500HD', days: 34 },
+        { status: 'Tech Working', id: 3237, name: '2H', desc: '2013 CHEVY SILVERADO W/T', days: 4 },
+        { status: 'Service Scheduled', id: 3289, name: 'ADAIR, JERRY', desc: 'KG2-XD VAN 61', days: 16 },
+        { status: 'Checked In', id: 3300, name: 'Doe, John', desc: 'TRACTOR X100', days: 2 },
+        { status: 'Triage', id: 3301, name: 'Smith, Jane', desc: 'SPARTAN 54\" MOWER', days: 6 },
+        { status: 'Waiting for Parts', id: 3302, name: 'Black, Jim', desc: 'DEUTZ TRACTOR', days: 11 },
+        { status: 'Warranty', id: 3303, name: 'Johnson, Pete', desc: 'RHINO BLADE', days: 1 },
+        { status: 'Warranty Filed', id: 3304, name: 'Lee, Mark', desc: 'SPARTAN RZ-HD', days: 5 },
+        { status: 'Manager Approval', id: 3305, name: 'Allen, Sam', desc: 'DEUTZ ENGINE', days: 8 },
+        { status: 'Needs Prediagnosed', id: 3306, name: 'Davis, Will', desc: 'TRACTOR PTO ISSUE', days: 2 },
+        { status: 'Parts Received', id: 3307, name: 'Moore, Beth', desc: 'SPARTAN 72\" BELTS', days: 9 }
+      ];
+
+      const columns = document.querySelectorAll('.column');
+      data.forEach(item => {
+        const column = Array.from(columns).find(col => col.dataset.status === item.status);
+        if (column) {
+          column.appendChild(createCard(item.id, item.name, item.desc, item.days));
+        }
+      });
+    }
+
+    window.onload = populateBoard;
+  </script>
+</head>
+<body>
+  <h1>Work Order Status Board</h1>
+  <div class="board">
+    <div class="column" data-status="To Be Invoiced">
+      <h2>To Be Invoiced</h2>
+    </div>
+    <div class="column" data-status="Tech Working">
+      <h2>Tech Working</h2>
+    </div>
+    <div class="column" data-status="Service Scheduled">
+      <h2>Service Scheduled</h2>
+    </div>
+    <div class="column" data-status="Checked In">
+      <h2>Checked In</h2>
+    </div>
+    <div class="column" data-status="Triage">
+      <h2>Triage</h2>
+    </div>
+    <div class="column" data-status="Waiting for Parts">
+      <h2>Waiting for Parts</h2>
+    </div>
+    <div class="column" data-status="Warranty">
+      <h2>Warranty</h2>
+    </div>
+    <div class="column" data-status="Warranty Filed">
+      <h2>Warranty Filed</h2>
+    </div>
+    <div class="column" data-status="Manager Approval">
+      <h2>Manager Approval</h2>
+    </div>
+    <div class="column" data-status="Needs Prediagnosed">
+      <h2>Needs Prediagnosed</h2>
+    </div>
+    <div class="column" data-status="Parts Received">
+      <h2>Parts Received</h2>
+    </div>
+  </div>
+</body>
+</html>
