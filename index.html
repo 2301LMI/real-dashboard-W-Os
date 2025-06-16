@@ -51,16 +51,28 @@
 
     function populateBoard(data) {
       const columns = {};
+      const counts = {};
+
       document.querySelectorAll('.column').forEach(col => {
-        columns[col.dataset.status] = col;
-        col.innerHTML = `<h2>${col.dataset.status}</h2>`;
+        const status = col.dataset.status;
+        columns[status] = col;
+        counts[status] = 0;
       });
 
       data.forEach(row => {
         const status = row[3];
         const card = createCard(row);
-        if (columns[status]) columns[status].appendChild(card);
+        if (columns[status]) {
+          columns[status].appendChild(card);
+          counts[status]++;
+        }
       });
+
+      // Update headings with counts
+      for (const status in columns) {
+        const heading = columns[status].querySelector('h2');
+        heading.textContent = `${status} (${counts[status] || 0})`;
+      }
     }
 
     async function fetchSheetData() {
