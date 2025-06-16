@@ -64,11 +64,11 @@
     }
 
     async function fetchSheetData() {
-      const url = "https://docs.google.com/spreadsheets/d/1w8cRczfapahc0PXOXm3Q_Ka0TGK0T0SR5B6M7h8M7Zc/gviz/tq?tqx=out:json";
+      const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSKxtC1VDGK6GR8bLSlllxTMhswea8xYj0jmippRZ7pnH1_0foledzsKy9Q8uLuHzauCq8yfv60YAME/pub?output=csv";
       const res = await fetch(url);
       const text = await res.text();
-      const json = JSON.parse(text.substr(47).slice(0, -2));
-      const rows = json.table.rows.map(r => r.c.map(c => (c ? c.v : '')));
+      const rows = text.trim().split('\n').map(line => line.split(','));
+      rows.shift(); // remove header
       populateBoard(rows);
     }
 
